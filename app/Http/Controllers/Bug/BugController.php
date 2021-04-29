@@ -20,6 +20,7 @@ class BugController extends Controller
             $data = Issue::paginate(20);
             return $this->success($data);
         } catch (Exception $e) {
+            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
