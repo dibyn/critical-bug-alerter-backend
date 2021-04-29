@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Issue;
+use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
 
 class IssueSeeder extends Seeder
 {
@@ -14,9 +15,12 @@ class IssueSeeder extends Seeder
      */
     public function run()
     {
-        Issue::create([
-            'name' => 'Test'
-        ]);
+        for ($x = 0; $x <= 10; $x++) {
+            Issue::create([
+                'name' => Str::random(50)
+            ]);
+        }
+        
         
     }
 }
