@@ -11,7 +11,6 @@ class NotificationService
     public function notifyToIOTDevice($duration = NotificationService::IOT_Duration)
     {
     
-
         // https://m4adtdev41.execute-api.us-east-1.amazonaws.com/dev/alert?alert=ring&duration=1000
     }
 }
