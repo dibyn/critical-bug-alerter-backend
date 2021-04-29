@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Issue extends Model
 {
@@ -19,4 +20,12 @@ class Issue extends Model
         'description',
         'status'
     ];
+
+    public function getStatusAttribute($value){
+        return ucwords($value);
+    }   
+
+    public function getCreatedAtAttribute($value) {
+        return (new Carbon($value))->diffForHumans();
+    }
 }

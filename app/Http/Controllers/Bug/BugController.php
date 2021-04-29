@@ -10,6 +10,7 @@ use App\Traits\ApiResponser;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Issue\CreateIssueRequest;
+use App\Http\Requests\Issue\ChangeIssueStatusRequest;
 
 class BugController extends Controller
 {
@@ -17,7 +18,7 @@ class BugController extends Controller
 
     public function list(Request $request) {
         try {
-            $data = Issue::paginate(20);
+            $data = Issue::orderBy('created_at', 'desc')->paginate(20, ['id','name','description', 'status', 'created_at']);
             return $this->success($data);
         } catch (Exception $e) {
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -40,24 +41,24 @@ class BugController extends Controller
                     'value' => 'acknowledged'
                 ],
                 [
-                    'name' => '$esolved',
+                    'name' => 'Resolved',
                     'value' => 'resolved'
                  ]
             ];
             return $this->success($data);
         } catch (Exception $e) {
-            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function changeStatus(Request $request, $issueId) {
+    public function changeStatus(ChangeIssueStatusRequest $request, $issueId) {
         try {
             $issue = Issue::find($issueId);
-            $issue->status = !$issue->status;
+            $issue->status = $request->status;
             $issue->save();
             return $this->success($issue);
         } catch (Exception $e) {
+            print_r($e->getMessage());
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
 
         }
@@ -68,9 +69,14 @@ class BugController extends Controller
             $issue = new Issue();
             $issue->name = $request->name;
             $issue->description = $request->description;
+            if ($request->has('status')) {
+                $issue->status = $request->status;
+            }
             $issue->save();
             return $this->success($issue, Response::HTTP_CREATED);
         } catch (Exception $e) {
+            print_r($e->getMessage());
+            die;
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
 
         }
@@ -81,7 +87,7 @@ class BugController extends Controller
             Issue::create([
                 'name' => Str::random(40)
             ]);
-            $data = Issue::paginate(20);
+            $data =  Issue::orderBy('created_at', 'desc')->paginate(20, ['id','name','description', 'status', 'created_at']);
             return $this->success($data);
         } catch (Exception $e) {
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);

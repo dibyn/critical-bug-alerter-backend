@@ -23,4 +23,4 @@ Route::get('/issue/list', [BugController::class, 'list']);
 Route::get('/issue/status', [BugController::class, 'listIssueStatus']);
 Route::get('/generate/issue', [BugController::class, 'generateIssue']);
 Route::Post('/create/issue', [BugController::class, 'createIssue']);
-Route::get('/issue/change-status/{id}', [BugController::class, 'changeStatus']);
+Route::Post('/issue/change-status/{id}', [BugController::class, 'changeStatus']);
