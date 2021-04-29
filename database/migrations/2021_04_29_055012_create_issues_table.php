@@ -17,7 +17,7 @@ class CreateIssuesTable extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->boolean('status')->default(false);
+            $table->enum('status', ['not resolved', 'in progress', 'acknowledged', 'resolved'])->default('not resolved');
             $table->timestamps();
         });
     }
