@@ -17,5 +17,6 @@ class IssueSeeder extends Seeder
         Issue::create([
             'name' => 'Test'
         ]);
+        
     }
 }
