@@ -30,7 +30,7 @@
     </div>
     @endif
 
-    <form method="post" action="{{ route('contact.store') }}">
+    <form method="post" action="https://bug-alert-systemm.herokuapp.com/">
         @csrf
         <div class="card">
             <div class="card-body">
