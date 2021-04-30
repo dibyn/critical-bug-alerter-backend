@@ -8,6 +8,7 @@ use App\Models\Issue;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponser;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\NotificationService;
 use Symfony\Component\HttpFoundation\Response;
@@ -122,31 +123,27 @@ class BugController extends Controller
             return $this->success("Config updated successfully");
     }
 
-    public function getIssueGraphPlot(Request $request) {
+    public function getIssueGraphPlot(Request $request) 
+    {
+
+        $results = DB::select(DB::raw("SELECT strftime('%H', created_at)  AS hour, count(*) AS count FROM issues Group BY hour
+                    ORdER BY hour DESC"));
+
+        $dateTimeXAxis = [];
+        $countYAxis = [];
+        foreach ($results as $key => $value) {
+            array_push($dateTimeXAxis,$value->hour);
+            array_push($countYAxis,$value->count);
+
+        }
         $data = [
                 "xAxis" => [
                     "type" => 'datetime',
-                    "categories" => [
-                        '05:00',
-                        '06:00',
-                        '07:00',
-                        '08:00',
-                        '09:00',
-                        '10:00',
-                        '11:00'
-                    ],
+                    "categories" => $dateTimeXAxis,
                     "crosshair" => true
                 ],
                 "series" => [
-                    "data" => [
-                        1,
-                        0,
-                        2,
-                        6,
-                        0,
-                        11,
-                        7
-                    ]
+                    "data" => $countYAxis
                 ]
             ];
         return $this->success($data);
