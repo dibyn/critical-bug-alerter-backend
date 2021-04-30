@@ -73,6 +73,7 @@ class BugController extends Controller
         try {
             $issue = new Issue();
             $issue->name = $request->name;
+            $issue->level = $request->level;
             $issue->description = $request->description;
             if ($request->has('status')) {
                 $issue->status = $request->status;
@@ -81,8 +82,6 @@ class BugController extends Controller
             NotificationService::notify();
             return $this->success($issue, Response::HTTP_CREATED);
         } catch (Exception $e) {
-            print_r($e->getMessage());
-            die;
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
 
         }
