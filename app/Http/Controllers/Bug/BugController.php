@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponser;
 use App\Http\Controllers\Controller;
+use App\Services\NotificationService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Issue\CreateIssueRequest;
 use App\Http\Requests\Issue\ChangeIssueStatusRequest;
@@ -89,6 +90,15 @@ class BugController extends Controller
             ]);
             $data =  Issue::orderBy('created_at', 'desc')->paginate(20, ['id','name','description', 'status', 'created_at']);
             return $this->success($data);
+        } catch (Exception $e) {
+            return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
+    }
+
+    public function notify(Request $request) {
+        try {
+            NotificationService::notifyToIOTDevice();
         } catch (Exception $e) {
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
 
