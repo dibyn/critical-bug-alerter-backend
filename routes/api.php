@@ -29,4 +29,5 @@ Route::get('/config/{key}', [BugController::class, 'getConfig']);
 Route::post('/config', [BugController::class, 'setConfig']);
 
 Route::get('/notify', [BugController::class, 'notify']);
+Route::get('/issue/graph-plot', [BugController::class, 'getIssueGraphPlot']);
 

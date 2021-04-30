@@ -63,9 +63,7 @@ class BugController extends Controller
             }
             return $this->success($issue);
         } catch (Exception $e) {
-            print_r($e->getMessage());
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
-
         }
     }
 
@@ -81,10 +79,7 @@ class BugController extends Controller
             NotificationService::notify();
             return $this->success($issue, Response::HTTP_CREATED);
         } catch (Exception $e) {
-            print_r($e->getMessage());
-            die;
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
-
         }
     }
 
@@ -124,5 +119,36 @@ class BugController extends Controller
     public function setConfig(Request $request) {
         if(Config::updateOrCreate(['key' => $request->get('key')], $request->all()))
             return $this->success("Config updated successfully");
+    }
+
+    public function getIssueGraphPlot(Request $request) {
+        $data = [
+                "xAxis" => [
+                    "type" => 'datetime',
+                    "categories" => [
+                        '05:00',
+                        '06:00',
+                        '07:00',
+                        '08:00',
+                        '09:00',
+                        '10:00',
+                        '11:00'
+                    ],
+                    "crosshair" => true
+                ],
+                "series" => [
+                    "data" => [
+                        1,
+                        0,
+                        2,
+                        6,
+                        0,
+                        11,
+                        7
+                    ]
+                ]
+            ];
+        return $this->success($data);
+		
     }
 }
