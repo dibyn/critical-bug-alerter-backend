@@ -74,6 +74,7 @@ class BugController extends Controller
                 $issue->status = $request->status;
             }
             $issue->save();
+            NotificationService::notify();
             return $this->success($issue, Response::HTTP_CREATED);
         } catch (Exception $e) {
             print_r($e->getMessage());
@@ -98,7 +99,8 @@ class BugController extends Controller
 
     public function notify(Request $request) {
         try {
-            NotificationService::notifyToIOTDevice();
+//            return NotificationService::notify();
+            return NotificationService::stopNotification();
         } catch (Exception $e) {
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
 
