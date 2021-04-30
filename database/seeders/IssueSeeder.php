@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use App\Models\Issue;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -30,12 +31,18 @@ class IssueSeeder extends Seeder
         ];
         $level = ['trace', 'debug', 'info', 'warn', 'error', 'fatal'];
         $status = ['not resolved', 'in progress', 'acknowledged', 'resolved'];
+        $min=1;
+        $max=24;
+        $addHour = rand($min,$max);
+        // $date = "2021-02-24 12:00:00";
         foreach ($errorMessages as $errorMessage) {
+            $created_at = Carbon::parse('2021-03-24 12:00:00')->addHour($addHour)->format('Y-m-d H:i:s');
             Issue::create([
                 'name' => $errorMessage,
                 'level' => Arr::random($level),
                 'status' => Arr::random($status),
-                'description' => Arr::random($errorMessages)
+                'description' => Arr::random($errorMessages),
+                'created_at' => $created_at
             ]);
         }
         

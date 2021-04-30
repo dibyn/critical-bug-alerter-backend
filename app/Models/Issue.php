@@ -18,8 +18,11 @@ class Issue extends Model
     protected $fillable = [
         'name',
         'description',
-        'status'
+        'status',
+        'created_at'
     ];
+
+    // public $timestamps = false;
 
     public function getStatusAttribute($value){
         return ucwords($value);
