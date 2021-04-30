@@ -71,6 +71,7 @@ class BugController extends Controller
         try {
             $issue = new Issue();
             $issue->name = $request->name;
+            $issue->level = $request->level;
             $issue->description = $request->description;
             if ($request->has('status')) {
                 $issue->status = $request->status;

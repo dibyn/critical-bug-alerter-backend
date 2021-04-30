@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/error', [\App\Http\Controllers\ClientAppController::class, 'error'])->name('error');
+
+Route::post('/', [\App\Http\Controllers\ClientAppController::class, 'register'])->name('contact.store');
