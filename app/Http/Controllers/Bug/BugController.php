@@ -20,7 +20,7 @@ class BugController extends Controller
 
     public function list(Request $request) {
         try {
-            $data = Issue::orderBy('created_at', 'desc')->paginate(20, ['id','name','description', 'status', 'created_at']);
+            $data = Issue::orderBy('created_at', 'desc')->paginate(20, ['id','name','description', 'level', 'status', 'created_at']);
             return $this->success($data);
         } catch (Exception $e) {
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
