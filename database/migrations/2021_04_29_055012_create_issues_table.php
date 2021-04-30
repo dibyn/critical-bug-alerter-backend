@@ -17,6 +17,7 @@ class CreateIssuesTable extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->enum('level', ['trace', 'debug', 'info', 'warn', 'error', 'fatal'])->default('info');
             $table->enum('status', ['not resolved', 'in progress', 'acknowledged', 'resolved'])->default('not resolved');
             $table->timestamps();
         });

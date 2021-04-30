@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Bug;
 
+use App\Models\Config;
 use Exception;
 use App\Models\Issue;
 use Illuminate\Support\Str;
@@ -57,6 +58,9 @@ class BugController extends Controller
             $issue = Issue::find($issueId);
             $issue->status = $request->status;
             $issue->save();
+            if($request->status != 'not resolved'){
+                NotificationService::stopNotification();
+            }
             return $this->success($issue);
         } catch (Exception $e) {
             print_r($e->getMessage());
@@ -105,5 +109,20 @@ class BugController extends Controller
             return $this->error('There has been some problem in the server', Response::HTTP_INTERNAL_SERVER_ERROR);
 
         }
+    }
+
+    public function getConfig($key) {
+        $config = Config::where(['key' => $key])->first();
+        if(!empty($config)){
+            return $this->success($config->value);
+        }
+        else{
+            return $this->error('Config not found', Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    public function setConfig(Request $request) {
+        if(Config::updateOrCreate(['key' => $request->get('key')], $request->all()))
+            return $this->success("Config updated successfully");
     }
 }

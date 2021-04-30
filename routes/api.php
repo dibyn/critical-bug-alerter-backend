@@ -22,8 +22,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/issue/list', [BugController::class, 'list']);
 Route::get('/issue/status', [BugController::class, 'listIssueStatus']);
 Route::get('/generate/issue', [BugController::class, 'generateIssue']);
-Route::Post('/create/issue', [BugController::class, 'createIssue']);
-Route::Post('/issue/change-status/{id}', [BugController::class, 'changeStatus']);
+Route::post('/create/issue', [BugController::class, 'createIssue']);
+Route::post('/issue/change-status/{id}', [BugController::class, 'changeStatus']);
+
+Route::get('/config/{key}', [BugController::class, 'getConfig']);
+Route::post('/config', [BugController::class, 'setConfig']);
 
 Route::get('/notify', [BugController::class, 'notify']);
 
